@@ -10,7 +10,9 @@ def run():
 
 @app.command()
 def test():
-    ...
+    import subprocess
+
+    subprocess.run(['pytest', 'tests'])
 
 
 if __name__ == "__main__":
