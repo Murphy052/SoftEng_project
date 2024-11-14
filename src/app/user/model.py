@@ -3,7 +3,7 @@ from dataclasses import field, dataclass
 from src.db.models import BaseModel
 
 
-@dataclass
+@dataclass(frozen=True)
 class User(BaseModel):
     username: str
     password: str

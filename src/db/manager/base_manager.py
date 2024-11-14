@@ -54,10 +54,6 @@ class BaseManager(ABC, Generic[Model]):
             cur.execute(query)
             result = cur.fetchone()
 
-        print(query)
-        print(len(result))
-        print(*self._fields)
-
         if not result:
             raise RecordDoesNotExist
 
