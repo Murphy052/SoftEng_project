@@ -22,13 +22,8 @@ class Settings(BaseSettings):
     ]
 
     # DB Params #
-    # Postgresql
-    #
-    # DATABASE: str
-    # HOST: str
-    # DB_USER: str
-    # PASSWORD: str
-    # PORT: int
+    DB_NAME:str = "database.db"
+
 
     DEBUG: bool = True
 

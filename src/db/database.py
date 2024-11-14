@@ -9,9 +9,9 @@ _Connection = TypeVar('_Connection')
 _Cursor = TypeVar('_Cursor')
 
 
-class Database(Protocol[_Connection, _Cursor]):
+class Database(Protocol):
     @abstractmethod
-    def connect(self) -> None:
+    def connect(self, conn_str) -> None:
         ...
 
     @abstractmethod
@@ -35,13 +35,13 @@ class SqliteDatabase(Database):
         else:
             return cls._instance
 
-    def __init__(self) -> None:
+    def __init__(self, conn_str: str = settings.DB_NAME) -> None:
         self._connection: Optional[sqlite3.Connection] = None
-        self.connect()
+        self.connect(conn_str)
 
-    def connect(self) -> None:
+    def connect(self, conn_str: str) -> None:
         if self._connection is None:
-            self._connection = sqlite3.connect(settings.DB_NAME)
+            self._connection = sqlite3.connect(conn_str)
 
     def get_conn(self) -> sqlite3.Connection:
         return self._connection
@@ -51,13 +51,18 @@ class SqliteDatabase(Database):
 
 
 @contextmanager
-def get_db_cursor[_Connection, _Cursor](db: Database):
+def get_db_cursor(db: Database):
     db_conn: _Connection = db.get_conn()
     db_cursor: _Cursor = db.get_cursor()
 
     try:
         yield db_cursor
-        db_cursor.commit()
+        db_conn.commit()
     except sqlite3.Error as e:
         db_conn.rollback()
-        logger.error(e)
+        raise e
+    finally:
+        db_cursor.close()
+
+def get_db():
+    return SqliteDatabase()
