@@ -99,9 +99,13 @@ class BaseManager(ABC, Generic[Model]):
 
         with get_db_cursor(db) as cur:
             cur.execute(query)
-            result = self._model(*(cur.fetchone()))
+            result = cur.fetchone()
 
-        return result
+        if not result:
+            raise RecordDoesNotExist
+
+        obj: Model = self._model(*result)
+        return obj
 
     def delete(
             self,

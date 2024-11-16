@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import timedelta
 from pathlib import Path
 from typing import List
 
@@ -27,15 +28,14 @@ class Settings(BaseSettings):
 
     DEBUG: bool = True
 
-    # JWT Params
-    #
-    # SECRET_KEY: str
-    # ALGORITHM: str = "HS256"
-    # ACCESS_TOKEN_LIFETIME: timedelta = timedelta(days=30)
+    # JWT Params #
+    SECRET_KEY: str
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_LIFETIME: timedelta = timedelta(days=30)
 
-    # class Config:
-    #     env_file = "./.env"
-    #     extra = "ignore"
+    class Config:
+        env_file = "./.env"
+        extra = "ignore"
 
 
 settings = Settings()

@@ -2,6 +2,6 @@ from dataclasses import dataclass
 
 
 @dataclass
-class TokenSchema:
+class TokenResponseSchema:
     access_token: str
     token_type: str

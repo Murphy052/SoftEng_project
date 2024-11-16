@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 from pypika import Query
 from pypika.queries import QueryBuilder
 
-from src.app.user.model import User
+from src.app.user.models import User, UserCreate
 from src.db import get_db_cursor, get_db
 from src.db.exceptions import RecordDoesNotExist
 from src.db.manager import BaseManager
@@ -21,22 +21,19 @@ class UserManager(BaseManager[User]):
 
     def create_user(
             self,
-            username,
-            password,
+            user: UserCreate,
             db = get_db()
     ) -> User:
         q: QueryBuilder = (
             Query()
             .into(self.table)
-            .insert()
-            .values(
-                id=str(uuid.uuid4()),
-                username=username,
-                password=password
-            )
+            .columns('id', 'username', 'password')
+            .insert((str(uuid.uuid4()), user.username, user.password))
         )
 
-        query: str = q.get_sql() + f" RETURNING {self._fields};"
+        table_fields: str = ', '.join(self._fields)
+        query: str = q.get_sql() + f" RETURNING {table_fields};"
+        print(query)
 
         with get_db_cursor(db) as cursor:
             cursor.execute(query)

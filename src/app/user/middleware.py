@@ -56,12 +56,6 @@ def auth_required(func):
                 status_code=status.HTTP_401_UNAUTHORIZED
             )
 
-        if not user.is_active:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="User is not verified or active"
-            )
-
         return await func(*args, **kwargs)
 
     return wrapper
