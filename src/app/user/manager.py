@@ -39,7 +39,7 @@ class UserManager(BaseManager[User]):
         query: str = q.get_sql() + f" RETURNING {self._fields};"
 
         with get_db_cursor(db) as cursor:
-            cursor.execute(q)
+            cursor.execute(query)
             result = cursor.fetchone()
 
         if not result:

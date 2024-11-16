@@ -3,11 +3,9 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from src.app.user.model import User
 from src.app.user.schemas import UserRegisterSchema, TokenSchema
+from src.app.user.usecases import register_usecase, user_login_usecase
 
 router = APIRouter()
-
-register_usecase=...
-user_login_usecase=...
 
 
 @router.post("/register")
