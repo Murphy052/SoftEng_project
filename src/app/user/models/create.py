@@ -12,6 +12,8 @@ class UserCreate:
 
     @staticmethod
     def validate_username(field):
+        from src.app.user.manager import user_manager
+
         if field is None or field == "":
             raise ValueError("Username cannot be empty")
         if len(field) > 255:
@@ -19,5 +21,5 @@ class UserCreate:
         pattern = r'^[a-zA-Z0-9_]{3,20}$'
         if not re.match(pattern, field):
             raise ValueError("Username must contain only letters, numbers and underscore")
-        # if user_manager.is_username_used(field):
-        #     raise ValueError("Username already exists")
+        if user_manager.is_username_used(field):
+            raise ValueError("Username already exists")

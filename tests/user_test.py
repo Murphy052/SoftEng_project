@@ -1,13 +1,11 @@
-import sqlite3
-
-from src.app.user.models.create import UserCreate
 from src.db import get_db, get_db_cursor
+from src.db.database import SqliteDatabase
 from src.db.exceptions import RecordDoesNotExist
-from src.app.user.models import User
-from src.app.user.manager import UserManager
+from src.app.user.models import User, UserCreate
+from src.app.user.manager import user_manager
 
-# Setup UserManager instance
-user_manager = UserManager()
+
+db = SqliteDatabase(":memory:")
 
 
 def setup_user_table():
@@ -80,13 +78,11 @@ def test_create_duplicate_user():
 
     # Create first user
     user_manager.create_user(UserCreate(username=username, password=password))
-
     try:
-        # Attempt to create a duplicate user
-        user_manager.create_user(UserCreate(username=username, password="another_password"))
-        assert False, "Duplicate user creation did not raise an exception."
-    except sqlite3.IntegrityError:
-        pass  # Expected behavior
+        user_manager.create_user(UserCreate(username=username, password="password"))
+        assert False, "Duplicate username did not raise an error."
+    except ValueError:
+        pass
 
     teardown_user_table()
 

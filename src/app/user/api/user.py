@@ -1,8 +1,9 @@
+from __future__ import annotations
+
 from fastapi import APIRouter, HTTPException, status, Depends, Request
 from fastapi.security import OAuth2PasswordRequestForm
-from passlib.context import CryptContext
 
-from src.app.user.crypto import verify_password, create_access_token, hash_password
+from src.app.user.crypto import verify_password, create_access_token
 from src.app.user.manager import user_manager
 from src.app.user.models import User, UserCreate
 from src.app.user.schemas import UserRegisterSchema, TokenResponseSchema
@@ -13,9 +14,13 @@ router = APIRouter()
 
 @router.post("/register")
 async def register(data: UserRegisterSchema):
-    hashed_password = hash_password(data.password)
     try:
-        user_manager.create_user(UserCreate(username=data.username, password=hashed_password,))
+        user_manager.create_user(
+            UserCreate(
+                username=data.username,
+                password=data.password,
+            )
+        )
         return "Successfully registered", status.HTTP_201_CREATED
     except ValueError as e:
         err_detail = e.args[0]

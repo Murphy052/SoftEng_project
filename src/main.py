@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 
 from src.core import settings
 from src.view import view_router
+from src.app.user.api import user_router
 
 app = FastAPI()
 app.add_middleware(
@@ -16,3 +17,4 @@ app.add_middleware(
 
 app.mount("/static", StaticFiles(directory="src/view/static"), name="static")
 app.include_router(view_router)
+app.include_router(user_router)

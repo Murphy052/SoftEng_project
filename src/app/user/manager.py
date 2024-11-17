@@ -6,13 +6,14 @@ from typing import TYPE_CHECKING
 from pypika import Query
 from pypika.queries import QueryBuilder
 
-from src.app.user.models import User, UserCreate
+from src.app.user.models import User
 from src.db import get_db_cursor, get_db
 from src.db.exceptions import RecordDoesNotExist
 from src.db.manager import BaseManager
 
 if TYPE_CHECKING:
     from src.db.database import Database
+    from src.app.user.models import UserCreate
 
 
 class UserManager(BaseManager[User]):
@@ -49,7 +50,7 @@ class UserManager(BaseManager[User]):
             self,
             username: str,
             db: Database = get_db(),
-    ):
+    ) -> User:
         q: QueryBuilder = (
             Query()
             .from_(self.table)
@@ -67,6 +68,16 @@ class UserManager(BaseManager[User]):
             raise RecordDoesNotExist
 
         return User(*result)
+
+    def is_username_used(
+            self,
+            username: str,
+            db: Database = get_db(),
+    ) -> bool:
+        query: str = f"""SELECT 1 FROM {self._model.__tablename__} WHERE username = ? LIMIT 1;"""
+        with get_db_cursor(db) as cur:
+            cur.execute(query, (username,))
+            return cur.fetchone() is not None
 
 
 user_manager = UserManager()
