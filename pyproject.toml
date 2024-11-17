@@ -17,6 +17,7 @@ pypika = "^0.48.9"
 contractspy = "^1.0.7"
 passlib = "^1.7.4"
 pyjwt = "^2.9.0"
+typer = "^0.13.0"
 
 [tool.poetry.group.dev.dependencies]
 generate-fastapi = "^0.1.3"
