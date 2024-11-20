@@ -27,7 +27,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run tests
-        run: python manager.py test
+        run: pytest ./tests
 
   deploy:
     if: github.ref == 'refs/heads/main'  # Deploy only on pushes to the main branch

@@ -4,6 +4,9 @@ WORKDIR /app
 
 COPY . /app
 
+ARG SECRET_KEY
+ENV SECRET_KEY=${SECRET_KEY}
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8000
