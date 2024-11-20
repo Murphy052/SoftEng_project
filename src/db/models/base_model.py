@@ -1,13 +1,8 @@
 from __future__ import annotations
 
-import uuid
 from abc import ABC
-from datetime import datetime
-from dataclasses import field, dataclass, fields
+from dataclasses import dataclass, fields
 from typing import Tuple
-
-from src.db.exceptions import RecordDoesNotExist
-from src.db.manager.shortcuts import check_record, update_record_from_model
 
 
 @dataclass(frozen=True)

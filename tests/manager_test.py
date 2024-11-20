@@ -1,13 +1,12 @@
 import sqlite3
 import uuid
 from dataclasses import dataclass
-from uuid import uuid4
 
 from src.db.database import SqliteDatabase
 from src.db import get_db, get_db_cursor
 from src.db.exceptions import RecordDoesNotExist
 from src.db.manager import BaseManager
-from src.db.manager.shortcuts import check_record, create_record_from_model
+from src.db.shortcuts import check_record, create_record_from_model
 from src.db.models import BaseModel
 
 
