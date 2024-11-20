@@ -5,8 +5,9 @@ app = Typer()
 @app.command()
 def run():
     import uvicorn
-    print("Hello")
-    uvicorn.run("src.main:app", port=8000, reload=True)
+    import os
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("src.main:app", port=port, reload=True)
 
 @app.command()
 def test():
