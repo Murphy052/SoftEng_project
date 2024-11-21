@@ -19,8 +19,9 @@ class Settings(BaseSettings):
         "http://localhost:8000",
         "http://127.0.0.1",
         "http://127.0.0.1:8000",
-        "https://yourdomain.com",
-        "https://yourwebapp.net",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "cs-casino.netlify.app",
     ]
 
     # DB Params #
