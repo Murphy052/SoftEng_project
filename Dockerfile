@@ -8,6 +8,7 @@ ARG SECRET_KEY
 ENV SECRET_KEY=${SECRET_KEY}
 
 RUN pip install --no-cache-dir -r requirements.txt
+RUN python manager.py init
 
 EXPOSE 8000
 

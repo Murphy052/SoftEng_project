@@ -5,6 +5,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from src.app.user.crypto import verify_password, create_access_token
 from src.app.user.manager import user_manager
+from src.app.user.middleware import auth_required
 from src.app.user.models import User, UserCreate
 from src.app.user.schemas import UserRegisterSchema, TokenResponseSchema
 from src.db.exceptions import RecordDoesNotExist
@@ -56,5 +57,6 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()) -> TokenRespon
 
 
 @router.get("/me", response_model=User)
-def get_me(request: Request) -> User:
+@auth_required
+async def get_me(request: Request) -> User:
     return request.user

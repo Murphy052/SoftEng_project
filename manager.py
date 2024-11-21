@@ -15,6 +15,15 @@ def test():
 
     subprocess.run(['pytest', 'tests'])
 
+@app.command()
+def init():
+    from src.db.database import SqliteDatabase
+    from src.db.init_db import initialize_database
+
+    db = SqliteDatabase("database.db")
+    initialize_database(db)
+    db.get_conn().close()
+
 
 if __name__ == "__main__":
     app()

@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.authentication import AuthenticationMiddleware
@@ -5,8 +7,18 @@ from starlette.middleware.authentication import AuthenticationMiddleware
 from src.app.user.middleware import BearerTokenAuthBackend
 from src.core import settings
 from src.app.user.api import user_router
+from src.db.database import SqliteDatabase
+from src.db.init_db import initialize_database
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    db = SqliteDatabase("database.db")
+    initialize_database(db)
+    yield
+    db.get_conn().close()
+
+app = FastAPI(lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.ALLOWED_ORIGINS,

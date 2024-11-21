@@ -41,7 +41,7 @@ class SqliteDatabase(Database):
 
     def connect(self, conn_str: str) -> None:
         if self._connection is None:
-            self._connection = sqlite3.connect(conn_str)
+            self._connection = sqlite3.connect(conn_str, check_same_thread=False)
 
     def get_conn(self) -> sqlite3.Connection:
         return self._connection

@@ -36,9 +36,6 @@ class BearerTokenAuthBackend(AuthenticationBackend):
         if user is None:
             raise AuthenticationError('Invalid JWT Token.')
 
-        if not user.is_active:
-            raise AuthenticationError('User is not active')
-
         return auth, user
 
 
