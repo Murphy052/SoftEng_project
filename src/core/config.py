@@ -22,6 +22,7 @@ class Settings(BaseSettings):
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "https://cs-casino.netlify.app",
+        "https://cs-casino-2aa0bc784bd4.herokuapp.com",
     ]
 
     # DB Params #
