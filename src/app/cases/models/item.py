@@ -6,9 +6,10 @@ from src.db.models import BaseModel
 
 
 @dataclass(frozen=True)
-class Case(BaseModel):
-    __tablename__ = "cases"
+class Item(BaseModel):
+    __tablename__ = "items"
 
     id: int
     name: str
+    rarity: int
     image: str

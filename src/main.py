@@ -5,8 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.authentication import AuthenticationMiddleware
 
 from src.app.user.middleware import BearerTokenAuthBackend
-from src.core import settings
 from src.app.user.api import user_router
+from src.app.cases.api import case_router
 from src.db.database import SqliteDatabase
 from src.db.init_db import initialize_database
 
@@ -30,3 +30,4 @@ app.add_middleware(
 
 # app.mount("/static", StaticFiles(directory="src/view/static"), name="static")
 app.include_router(user_router)
+app.include_router(case_router)
