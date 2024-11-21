@@ -19,6 +19,7 @@ async def lifespan(app: FastAPI):
     db.get_conn().close()
 
 app = FastAPI(lifespan=lifespan)
+app.add_middleware(AuthenticationMiddleware, backend=BearerTokenAuthBackend())
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.ALLOWED_ORIGINS,
@@ -26,7 +27,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.add_middleware(AuthenticationMiddleware, backend=BearerTokenAuthBackend())
 
 # app.mount("/static", StaticFiles(directory="src/view/static"), name="static")
 app.include_router(user_router)
