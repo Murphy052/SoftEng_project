@@ -1,5 +1,8 @@
+from dataclasses import asdict
+
 from fastapi.testclient import TestClient
 
+from src.app.cases.managers.item import item_manager
 from src.app.user.manager import user_manager
 from src.main import app
 from src.app.user.crypto import create_access_token
@@ -7,11 +10,12 @@ from src.app.user.crypto import create_access_token
 client = TestClient(app)
 
 # USER #
-
 MOCK_USER = {
     "username": "test_mock_user",
     "password": "secure_password"
 }
+TOKEN = create_access_token(MOCK_USER["username"])
+AUTH_HEADER = {"Authorization": f"Bearer {TOKEN}"}
 
 def test_register_success():
     """Test user registration."""
@@ -57,10 +61,24 @@ def test_login_invalid_password():
 
 def test_get_me():
     """Test /me endpoint."""
-    token = create_access_token(MOCK_USER["username"])
-    headers = {"Authorization": f"Bearer {token}"}
-    response = client.get("/me", headers=headers)
+    response = client.get("/me", headers=AUTH_HEADER)
     assert response.status_code == 200, "Failed to fetch current user"
     assert response.json()["username"] == MOCK_USER["username"], "Fetched user mismatch"
 
     user_manager.delete(user_manager.get_user(MOCK_USER["username"]).id)
+
+
+# CASES
+
+def test_get_cases():
+    response = client.get("/cases")
+
+    assert response.status_code == 200, "Failed to fetch cases"
+    assert response.json()[0] == {"id": 1, "name": "Operation Hydra Case", "image": "operation_hydra_case.png"}
+
+
+def test_get_case():
+    response = client.get("/cases/1")
+
+    assert response.status_code == 200, "Failed to fetch case"
+    assert response.json()["items"] == list(map(lambda x: asdict(x), item_manager.get_case_items(1)))

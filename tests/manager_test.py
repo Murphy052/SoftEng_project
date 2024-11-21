@@ -13,17 +13,17 @@ from src.db.models import BaseModel
 db = SqliteDatabase(':memory:')
 
 @dataclass(frozen=True)
-class TestModel(BaseModel):
+class _TestModel(BaseModel):
     __tablename__ = "test_model"
 
     test_field: str
 
 
-class TestManager(BaseManager[TestModel]):
+class _TestManager(BaseManager[_TestModel]):
     def __init__(self):
-        super().__init__(TestModel)
+        super().__init__(_TestModel)
 
-_test_manager = TestManager()
+_test_manager = _TestManager()
 
 
 def setup_db():
@@ -43,7 +43,7 @@ def teardown_db():
 def test_db_model():
     """Test the BaseModel functionality."""
     uid = uuid.uuid4()
-    test_record = TestModel(uid, "test")
+    test_record = _TestModel(uid, "test")
 
     assert uid == test_record.id, "ID mismatch in BaseModel."
     assert test_record.__tablename__ == "test_model", "Incorrect table name in BaseModel."
@@ -77,9 +77,9 @@ def test_manager_crud_operations():
     uid = str(uuid.uuid4())
 
     # Create
-    test_record = TestModel(id=uid, test_field="test")
+    test_record = _TestModel(id=uid, test_field="test")
     create_record_from_model(test_record)
-    assert check_record(TestModel, test_record.id), "Record was not created."
+    assert check_record(_TestModel, test_record.id), "Record was not created."
 
     # Read
     fetched_record = _test_manager.get_by_id(test_record.id)
@@ -93,7 +93,7 @@ def test_manager_crud_operations():
 
     # Delete
     _test_manager.delete(test_record.id)
-    assert not check_record(TestModel, test_record.id), "Record was not deleted."
+    assert not check_record(_TestModel, test_record.id), "Record was not deleted."
 
     teardown_db()
 

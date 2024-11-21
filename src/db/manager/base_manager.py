@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 Model = TypeVar("Model", bound=BaseModel)
-type PrimaryKey = Union[str, uuid.UUID]
+type PrimaryKey = Union[str, uuid.UUID, int]
 
 
 class BaseManager(ABC, Generic[Model]):
