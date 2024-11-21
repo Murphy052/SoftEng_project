@@ -27,7 +27,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Init
-        run: python manager.py init
+        run: export SECRET_KEY=${{ secrets.SECRET_KEY }} && python manager.py init
 
       - name: Run tests
         env:
