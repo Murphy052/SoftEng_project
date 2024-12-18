@@ -8,6 +8,7 @@ from src.app.user.manager import user_manager
 from src.app.user.middleware import auth_required
 from src.app.user.models import User, UserCreate
 from src.app.user.schemas import UserRegisterSchema, TokenResponseSchema
+from src.app.user.schemas.user import UserSchema
 from src.db.exceptions import RecordDoesNotExist
 
 router = APIRouter()
@@ -56,7 +57,10 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()) -> TokenRespon
     )
 
 
-@router.get("/me", response_model=User)
+@router.get("/me", response_model=UserSchema)
 @auth_required
-async def get_me(request: Request) -> User:
-    return request.user
+async def get_me(request: Request) -> UserSchema:
+    return UserSchema(
+        username=request.user.username,
+        inventory=user_manager.get_inventory(request.user.id),
+    )

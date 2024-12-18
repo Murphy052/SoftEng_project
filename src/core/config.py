@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     STATIC_DIR: Path = APP_DIR.joinpath("view/static")
     TEMPLATES_DIR: Path = APP_DIR.joinpath("view/templates")
 
-    ALLOWED_ORIGINS: List[AnyHttpUrl] = [
+    ALLOWED_ORIGINS: List[AnyHttpUrl] = (
         "http://localhost",
         "http://localhost:8000",
         "http://127.0.0.1",
@@ -23,7 +23,7 @@ class Settings(BaseSettings):
         "http://127.0.0.1:3000",
         "https://cs-casino.netlify.app",
         "https://cs-casino-2aa0bc784bd4.herokuapp.com",
-    ]
+    )
 
     # DB Params #
     DB_NAME:str = "database.db"

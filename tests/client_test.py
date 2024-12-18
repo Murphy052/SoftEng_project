@@ -2,7 +2,7 @@ from dataclasses import asdict
 
 from fastapi.testclient import TestClient
 
-from src.app.cases.managers.item import item_manager
+from src.app.cases.manager import case_manager
 from src.app.user.manager import user_manager
 from src.main import app
 from src.app.user.crypto import create_access_token
@@ -81,4 +81,4 @@ def test_get_case():
     response = client.get("/cases/1")
 
     assert response.status_code == 200, "Failed to fetch case"
-    assert response.json()["items"] == list(map(lambda x: asdict(x), item_manager.get_case_items(1)))
+    assert response.json()["items"] == list(map(lambda x: asdict(x), case_manager.get_case_items(1)))
