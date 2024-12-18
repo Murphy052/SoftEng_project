@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import uuid
-from typing import TYPE_CHECKING
+from dataclasses import fields
+from typing import TYPE_CHECKING, List
 
 from pypika import Query
-from pypika.queries import QueryBuilder
+from pypika.queries import QueryBuilder, Table
 
+from src.app.cases.models.item import Item
 from src.app.user.models import User
 from src.db import get_db_cursor, get_db
 from src.db.exceptions import RecordDoesNotExist
@@ -78,6 +80,24 @@ class UserManager(BaseManager[User]):
         with get_db_cursor(db) as cur:
             cur.execute(query, (username,))
             return cur.fetchone() is not None
+
+    @staticmethod
+    def get_inventory(
+            user_id: int,
+            db: Database = get_db(),
+    ) -> List[Item]:
+        query = "SELECT id,name,rarity,image FROM inventory WHERE inventory.user_id=?;"
+        print(query)
+
+        with get_db_cursor(db) as cursor:
+            cursor.execute(query, [user_id])
+            raw_data = cursor.fetchall()
+
+        if raw_data is None:
+            return []
+
+        result: List[Item] = list(map(lambda row: Item(*row), raw_data))
+        return result
 
 
 user_manager = UserManager()

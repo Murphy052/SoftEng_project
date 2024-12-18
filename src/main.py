@@ -14,7 +14,7 @@ from src.db.init_db import initialize_database
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     db = SqliteDatabase("database.db")
-    initialize_database(db)
+    # initialize_database(db)
     yield
     db.get_conn().close()
 
