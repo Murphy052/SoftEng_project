@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, HTTPException, status
 
 from src.app.cases.manager import case_manager
 from src.app.cases.models.case import Case
@@ -24,4 +24,6 @@ async def get_case(case_id: int) -> CaseWithItems:
 
 @router.get("/open-case")
 async def get_open_case(request: Request) -> Item:
-    user = request.user
+    raise HTTPException(
+        status_code=status.HTTP_501_NOT_IMPLEMENTED,
+    )
