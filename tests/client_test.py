@@ -82,3 +82,8 @@ def test_get_case():
 
     assert response.status_code == 200, "Failed to fetch case"
     assert response.json()["items"] == list(map(lambda x: asdict(x), case_manager.get_case_items(1)))
+
+def test_ci_cd_demo():
+    response = client.get("/ci-cd-demo?error=0")
+
+    assert response.status_code == 200
