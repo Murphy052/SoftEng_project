@@ -31,3 +31,10 @@ app.add_middleware(
 # app.mount("/static", StaticFiles(directory="src/view/static"), name="static")
 app.include_router(user_router)
 app.include_router(case_router)
+
+@app.get("/ci-cd-demo")
+def ci_cd_demo(error: int):
+    if error == 1:
+        raise Exception
+
+    return "Success"
